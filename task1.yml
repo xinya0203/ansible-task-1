@@ -1,0 +1,46 @@
+- hosts: centos2
+  tasks:
+  # task #1: Disable SELinus  
+  - name: Disable SELinux
+    selinux:
+      state: disabled
+  # task #2: Install Apache
+  - name: Install Apache
+    yum:
+      name: httpd
+      state: latest
+  # task #3: Start/Enable Apache
+  - name: Stant and Enable Apache
+    systemd:
+      state: started
+      enabled: yes
+      name: httpd
+  # task #4: Download Template
+  - name: Download foo.conf
+    get_url:
+      url: https://www.free-css.com/assets/files/free-css-templates/download/page294/woody.zip
+      dest: /tmp/
+  # task #5 Extract Template to /var/www/html
+  - name: Install Unzip
+    yum:
+      name: unzip
+      state: latest
+
+  - name: Unarchive a file that is already on the remote machine
+    unarchive:
+      src: /tmp/woody.zip
+      dest: /var/www/html
+      remote_src: yes
+  
+  - name: Move Template Files
+    shell: mv /var/www/html/carpenter-website-template/* /var/www/html/
+    args:
+      creates: /var/www/html/index.html
+
+  - name: Recursively change ownership of a directory
+    file:
+      path: /var/www/html
+      state: directory
+      recurse: yes
+      owner: apache
+      group: apache
