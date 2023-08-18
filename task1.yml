@@ -25,7 +25,7 @@
       url: https://www.free-css.com/assets/files/free-css-templates/download/page294/woody.zip
       dest: /tmp/
   
-  # task #5 Extract Template to /var/www/html
+  # task #5: Extract Template to /var/www/html
   - name: Install Unzip
     yum:
       name: unzip
